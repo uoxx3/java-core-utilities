@@ -1,0 +1,7 @@
+jdk:
+  - openjdk17
+install:
+  - echo "Generating Android Flavor"
+  - ./gradlew android-library:publishToMavenLocal --stacktrace
+  - echo "Generating JVM Flavor"
+  - ./gradlew java-library:publishToMavenLocal --stacktrace
