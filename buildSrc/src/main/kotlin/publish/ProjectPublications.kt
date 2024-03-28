@@ -63,19 +63,17 @@ private fun configureMavenPublication(
     ?.let(publication::from)
   
   // Configure publication artifacts
-  cSpec.artifacts?.let {
-    it.forEach { artifact ->
-      // Check the artifact type
-      val artifactObj = project.tasks.findByName(artifact.taskName)
-      if (artifactObj == null && artifact.required) {
-        throw IllegalStateException("""
+  cSpec.artifacts?.forEach { artifact ->
+    // Check the artifact type
+    val arrObj = project.tasks.findByName(artifact.taskName)
+    if (arrObj == null && artifact.required) {
+      throw IllegalStateException("""
 					The task "${artifact.taskName}" is not defined within "$project" and is required for publication "${cSpec.name}"
 				""".trimIndent())
-      }
-      
-      // Attach the artifact
-      publication.artifact(artifactObj)
     }
+    
+    // Attach the artifact
+    arrObj?.let(publication::artifact)
   }
   
   // Configure POM element

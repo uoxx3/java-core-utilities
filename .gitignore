@@ -7,6 +7,9 @@ build/
 *local*.properties
 *.env
 
+### Auto generated files ###
+build.properties
+
 ### IntelliJ IDEA ###
 .idea/modules.xml
 .idea/workspace.xml

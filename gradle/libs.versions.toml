@@ -20,9 +20,10 @@ version-library-java-junit-jupiter = "5.10.0"
 # ---------------------------------------------------
 # - Plugin versions
 # ---------------------------------------------------
-version-plugin-android-library = "8.3.0"
+version-plugin-android-library = "8.3.1"
 version-plugin-gradle-nexus-publish = "1.3.0"
 version-plugin-javamodularity-javamodule = "1.8.12"
+version-plugin-org-sonatype-central-publish = "0.4.0"
 version-plugin-uoxx3-cjfx = "1.0.0"
 version-plugin-uoxx3-environment = "1.0.1"
 
@@ -59,3 +60,4 @@ io-gradle-nexus-publish = { id = "io.github.gradle-nexus.publish-plugin", versio
 io-uoxx3-cjfx = { id = "io.github.uoxx3.cjfx", version.ref = "version-plugin-uoxx3-cjfx" }
 io-uoxx3-environment = { id = "io.github.uoxx3.project-environment", version.ref = "version-plugin-uoxx3-environment" }
 org-javamodularity-module = { id = "org.javamodularity.moduleplugin", version.ref = "version-plugin-javamodularity-javamodule" }
+org-sonatype-central-publish = { id = "org.sonatype.central.central-publishing-maven-plugin", version.ref = "version-plugin-org-sonatype-central-publish" }

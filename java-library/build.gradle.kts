@@ -15,7 +15,6 @@ plugins {
  * ----------------------------------------------------- */
 
 val projectSpec = getProjectInfo()
-
 group = projectSpec.group
 version = projectSpec.version
 
@@ -42,8 +41,9 @@ afterEvaluate {
     // Sign all publications
     useInMemoryPgpKeys(
       projectEnv["SIGNING_USER_ID"].getOrNull(),
-      projectEnv["SIGNING_PASSWORD"].getOrNull(),
-      projectEnv["SIGNING_PGP_KEY"].getOrNull())
+      projectEnv["SIGNING_USER_PGP_KEY"].getOrNull(),
+      projectEnv["SIGNING_USER_PASSWORD"].getOrNull())
+    
     sign(publishing.publications)
   }
 }
@@ -80,6 +80,13 @@ val sourceJar by tasks.registering(Jar::class) {
 
 tasks.named("processResources") {
   dependsOn(buildInfoGen)
+}
+
+tasks.named("javadoc", Javadoc::class) {
+  with(options as StandardJavadocDocletOptions) {
+    outputLevel = JavadocOutputLevel.QUIET
+    addStringOption("Xdoclint:none", "-quiet")
+  }
 }
 
 tasks.test {
