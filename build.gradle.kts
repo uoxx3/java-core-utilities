@@ -16,5 +16,4 @@ allprojects {
   // Common plugins
   apply(plugin = "io.github.uoxx3.project-environment")
   apply(plugin = "org.gradle.maven-publish")
-  apply(plugin = "org.gradle.signing")
 }
