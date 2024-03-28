@@ -1,6 +1,5 @@
 import publish.createFromSpec
 import publish.getProjectInfo
-import kotlin.jvm.optionals.getOrNull
 
 plugins {
   alias(libs.plugins.com.android.library)
@@ -60,16 +59,6 @@ afterEvaluate {
   publishing.publications {
     // Generate maven publications
     createFromSpec(projectSpec, project)
-  }
-  
-  signing {
-    // Sign all publications
-    useInMemoryPgpKeys(
-      projectEnv["SIGNING_USER_ID"].getOrNull(),
-      projectEnv["SIGNING_USER_PGP_KEY"].getOrNull(),
-      projectEnv["SIGNING_USER_PASSWORD"].getOrNull())
-    
-    sign(publishing.publications)
   }
 }
 
