@@ -21,16 +21,14 @@ public final class UDoubleWrapperImpl implements UDoubleWrapper {
 	 * The wrapped primitive.
 	 */
 	private final double value;
-	
-	/**
-	 * The minimum primitive value
-	 */
-	private double min;
-	
 	/**
 	 * The maximum primitive value
 	 */
 	private final double max;
+	/**
+	 * The minimum primitive value
+	 */
+	private double min;
 	
 	/* -----------------------------------------------------
 	 * Constructors
@@ -59,31 +57,15 @@ public final class UDoubleWrapperImpl implements UDoubleWrapper {
 	 * ----------------------------------------------------- */
 	
 	/**
-	 * Sets the minimum value for the wrapped primitive value.
+	 * Performs the given action on the wrapped integer value and returns the same object.
 	 *
-	 * @param value the minimum value
+	 * @param consumer the action to perform
 	 * @return this object
 	 */
 	@Override
-	public @NonNull UDoubleWrapper min(double value) {
-		synchronized (lock) {
-			min = value;
-			return this;
-		}
-	}
-	
-	/**
-	 * Sets the maximum value for the wrapped primitive value.
-	 *
-	 * @param value the maximum value
-	 * @return this object
-	 */
-	@Override
-	public @NonNull UDoubleWrapper max(double value) {
-		synchronized (lock) {
-			min = value;
-			return this;
-		}
+	public @NonNull UDoubleWrapper also(@NonNull DoubleConsumer consumer) {
+		consumer.accept(getAsDouble());
+		return this;
 	}
 	
 	/**
@@ -178,18 +160,6 @@ public final class UDoubleWrapperImpl implements UDoubleWrapper {
 	}
 	
 	/**
-	 * Performs the given action on the wrapped integer value and returns the same object.
-	 *
-	 * @param consumer the action to perform
-	 * @return this object
-	 */
-	@Override
-	public @NonNull UDoubleWrapper also(@NonNull DoubleConsumer consumer) {
-		consumer.accept(getAsDouble());
-		return this;
-	}
-	
-	/**
 	 * Gets a result.
 	 *
 	 * @return a result
@@ -199,6 +169,44 @@ public final class UDoubleWrapperImpl implements UDoubleWrapper {
 		synchronized (lock) {
 			return Math.max(min, Math.min(value, max));
 		}
+	}
+	
+	/**
+	 * Sets the maximum value for the wrapped primitive value.
+	 *
+	 * @param value the maximum value
+	 * @return this object
+	 */
+	@Override
+	public @NonNull UDoubleWrapper max(double value) {
+		synchronized (lock) {
+			min = value;
+			return this;
+		}
+	}
+	
+	/**
+	 * Sets the minimum value for the wrapped primitive value.
+	 *
+	 * @param value the minimum value
+	 * @return this object
+	 */
+	@Override
+	public @NonNull UDoubleWrapper min(double value) {
+		synchronized (lock) {
+			min = value;
+			return this;
+		}
+	}
+	
+	/**
+	 * Converts a primitive wrapper to one of type object
+	 *
+	 * @return a new wrapper object with the contents of the main wrapper
+	 */
+	@Override
+	public @NonNull UObjectWrapper<Double> toObjectWrapper() {
+		return apply((double number) -> (Double) number);
 	}
 	
 }

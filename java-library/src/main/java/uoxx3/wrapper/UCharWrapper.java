@@ -11,6 +11,14 @@ import uoxx3.functional.supplier.CharSupplier;
 public interface UCharWrapper extends CharSupplier {
 	
 	/**
+	 * Performs the given action on the wrapped char value and returns the same object.
+	 *
+	 * @param consumer the action to perform
+	 * @return this object
+	 */
+	@NotNull UCharWrapper also(@NotNull CharConsumer consumer);
+	
+	/**
 	 * Applies the given function to the wrapped char value and wraps the result.
 	 *
 	 * @param <R>      the type of the result
@@ -28,12 +36,31 @@ public interface UCharWrapper extends CharSupplier {
 	@NotNull UCharWrapper apply(@NotNull CharOnlyFunction function);
 	
 	/**
-	 * Performs the given action on the wrapped char value and returns the same object.
+	 * Checks if the array content is equal to the specified double value within a default tolerance.
 	 *
-	 * @param consumer the action to perform
-	 * @return this object
+	 * @param other The double value to compare against.
+	 * @return true if the array content is equal to the specified double value within the default tolerance, false otherwise.
 	 */
-	@NotNull UCharWrapper also(@NotNull CharConsumer consumer);
+	default boolean contentEquals(char other) {
+		return getAsChar() == other;
+	}
+	
+	/**
+	 * Checks if the array content is equal to the content of the specified UByteWrapper.
+	 *
+	 * @param other The UByteWrapper to compare against.
+	 * @return true if the array content is equal to the content of the specified UByteWrapper, false otherwise.
+	 */
+	default boolean contentEquals(@NotNull UCharWrapper other) {
+		return contentEquals(other.getAsChar());
+	}
+	
+	/**
+	 * Converts a primitive wrapper to one of type object
+	 *
+	 * @return a new wrapper object with the contents of the main wrapper
+	 */
+	@NotNull UObjectWrapper<Character> toObjectWrapper();
 	
 	/**
 	 * A functional interface for functions that operate on double values only.

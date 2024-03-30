@@ -59,31 +59,15 @@ public final class ULongWrapperImpl implements ULongWrapper {
 	 * ----------------------------------------------------- */
 	
 	/**
-	 * Sets the minimum value for the wrapped long value.
+	 * Performs the given action on the wrapped integer value and returns the same object.
 	 *
-	 * @param value the minimum value
+	 * @param consumer the action to perform
 	 * @return this object
 	 */
 	@Override
-	public @NonNull ULongWrapper min(long value) {
-		synchronized (lock) {
-			min = value;
-			return this;
-		}
-	}
-	
-	/**
-	 * Sets the maximum value for the wrapped long value.
-	 *
-	 * @param value the maximum value
-	 * @return this object
-	 */
-	@Override
-	public @NonNull ULongWrapper max(long value) {
-		synchronized (lock) {
-			max = value;
-			return this;
-		}
+	public @NonNull ULongWrapper also(@NonNull LongConsumer consumer) {
+		consumer.accept(getAsLong());
+		return this;
 	}
 	
 	/**
@@ -178,18 +162,6 @@ public final class ULongWrapperImpl implements ULongWrapper {
 	}
 	
 	/**
-	 * Performs the given action on the wrapped integer value and returns the same object.
-	 *
-	 * @param consumer the action to perform
-	 * @return this object
-	 */
-	@Override
-	public @NonNull ULongWrapper also(@NonNull LongConsumer consumer) {
-		consumer.accept(getAsLong());
-		return this;
-	}
-	
-	/**
 	 * Gets a result.
 	 *
 	 * @return a result
@@ -199,6 +171,44 @@ public final class ULongWrapperImpl implements ULongWrapper {
 		synchronized (lock) {
 			return Math.max(min, Math.min(value, max));
 		}
+	}
+	
+	/**
+	 * Sets the maximum value for the wrapped long value.
+	 *
+	 * @param value the maximum value
+	 * @return this object
+	 */
+	@Override
+	public @NonNull ULongWrapper max(long value) {
+		synchronized (lock) {
+			max = value;
+			return this;
+		}
+	}
+	
+	/**
+	 * Sets the minimum value for the wrapped long value.
+	 *
+	 * @param value the minimum value
+	 * @return this object
+	 */
+	@Override
+	public @NonNull ULongWrapper min(long value) {
+		synchronized (lock) {
+			min = value;
+			return this;
+		}
+	}
+	
+	/**
+	 * Converts a primitive wrapper to one of type object
+	 *
+	 * @return a new wrapper object with the contents of the main wrapper
+	 */
+	@Override
+	public @NonNull UObjectWrapper<Long> toObjectWrapper() {
+		return apply((long number) -> (Long) number);
 	}
 	
 }

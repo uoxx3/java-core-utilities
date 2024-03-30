@@ -9,25 +9,16 @@ import java.util.function.IntSupplier;
 /**
  * A wrapper interface for integer values.
  */
-public interface UIntegerWrapper extends IntSupplier {
+public interface UIntegerWrapper extends IntSupplier, UNumberWrapper<Integer, UIntegerWrapper> {
 	
 	/**
-	 * Sets the minimum value for the wrapped integer value.
+	 * Performs the given action on the wrapped integer value and returns the same object.
 	 *
-	 * @param value the minimum value
+	 * @param consumer the action to perform
 	 * @return this object
 	 */
 	@NonNull
-	UIntegerWrapper min(int value);
-	
-	/**
-	 * Sets the maximum value for the wrapped integer value.
-	 *
-	 * @param value the maximum value
-	 * @return this object
-	 */
-	@NonNull
-	UIntegerWrapper max(int value);
+	UIntegerWrapper also(@NonNull IntConsumer consumer);
 	
 	/**
 	 * Applies the given function to the wrapped integer value and wraps the result.
@@ -93,13 +84,63 @@ public interface UIntegerWrapper extends IntSupplier {
 	UDoubleWrapper apply(@NonNull UDoubleWrapper.DoubleOnlyFunction function);
 	
 	/**
-	 * Performs the given action on the wrapped integer value and returns the same object.
+	 * Checks if the array content is equal to the specified double value within a default tolerance.
 	 *
-	 * @param consumer the action to perform
+	 * @param other The double value to compare against.
+	 * @return true if the array content is equal to the specified double value within the default tolerance, false otherwise.
+	 */
+	default boolean contentEquals(double other) {
+		return contentEquals(other, UDoubleWrapper.EQUALS_TOLERANCE);
+	}
+	
+	/**
+	 * Checks if the array content is equal to the specified double value within the specified tolerance.
+	 *
+	 * @param other     The double value to compare against.
+	 * @param tolerance The tolerance for the comparison.
+	 * @return true if the array content is equal to the specified double value within the specified tolerance, false otherwise.
+	 */
+	default boolean contentEquals(double other, double tolerance) {
+		return Math.abs(getAsInt() - other) <= tolerance;
+	}
+	
+	/**
+	 * Checks if the array content is equal to the specified long value.
+	 *
+	 * @param other The long value to compare against.
+	 * @return true if the array content is equal to the specified long value, false otherwise.
+	 */
+	default boolean contentEquals(long other) {
+		return getAsInt() == other;
+	}
+	
+	/**
+	 * Checks if the array content is equal to the content of the specified UByteWrapper.
+	 *
+	 * @param other The UByteWrapper to compare against.
+	 * @return true if the array content is equal to the content of the specified UByteWrapper, false otherwise.
+	 */
+	default boolean contentEquals(@NonNull UIntegerWrapper other) {
+		return contentEquals(other.getAsInt());
+	}
+	
+	/**
+	 * Sets the maximum value for the wrapped integer value.
+	 *
+	 * @param value the maximum value
 	 * @return this object
 	 */
 	@NonNull
-	UIntegerWrapper also(@NonNull IntConsumer consumer);
+	UIntegerWrapper max(int value);
+	
+	/**
+	 * Sets the minimum value for the wrapped integer value.
+	 *
+	 * @param value the minimum value
+	 * @return this object
+	 */
+	@NonNull
+	UIntegerWrapper min(int value);
 	
 	/**
 	 * A functional interface for functions that operate on integer values only.

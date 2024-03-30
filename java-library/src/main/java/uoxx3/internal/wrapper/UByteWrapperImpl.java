@@ -60,43 +60,15 @@ public final class UByteWrapperImpl implements UByteWrapper {
 	 * ----------------------------------------------------- */
 	
 	/**
-	 * Gets a byte value.
+	 * Performs the given action on the wrapped byte value and returns the same object.
 	 *
-	 * @return a byte value
-	 */
-	@Override
-	public byte getAsByte() {
-		synchronized (lock) {
-			return (byte) Math.max(min, Math.min(value, max));
-		}
-	}
-	
-	/**
-	 * Sets the minimum value for the wrapped byte value.
-	 *
-	 * @param value the minimum value
+	 * @param consumer the action to perform
 	 * @return this object
 	 */
 	@Override
-	public @NotNull UByteWrapper min(@Range(from = 0, to = Byte.MIN_VALUE) int value) {
-		synchronized (lock) {
-			min = (byte) value;
-			return this;
-		}
-	}
-	
-	/**
-	 * Sets the maximum value for the wrapped byte value.
-	 *
-	 * @param value the maximum value
-	 * @return this object
-	 */
-	@Override
-	public @NotNull UByteWrapper max(@Range(from = 0, to = Byte.MAX_VALUE) int value) {
-		synchronized (lock) {
-			max = (byte) value;
-			return this;
-		}
+	public @NotNull UByteWrapper also(@NotNull IntConsumer consumer) {
+		consumer.accept(getAsByte());
+		return this;
 	}
 	
 	/**
@@ -191,15 +163,53 @@ public final class UByteWrapperImpl implements UByteWrapper {
 	}
 	
 	/**
-	 * Performs the given action on the wrapped byte value and returns the same object.
+	 * Gets a byte value.
 	 *
-	 * @param consumer the action to perform
+	 * @return a byte value
+	 */
+	@Override
+	public byte getAsByte() {
+		synchronized (lock) {
+			return (byte) Math.max(min, Math.min(value, max));
+		}
+	}
+	
+	/**
+	 * Sets the maximum value for the wrapped byte value.
+	 *
+	 * @param value the maximum value
 	 * @return this object
 	 */
 	@Override
-	public @NotNull UByteWrapper also(@NotNull IntConsumer consumer) {
-		consumer.accept(getAsByte());
-		return this;
+	public @NotNull UByteWrapper max(@Range(from = 0, to = Byte.MAX_VALUE) int value) {
+		synchronized (lock) {
+			max = (byte) value;
+			return this;
+		}
+	}
+	
+	/**
+	 * Sets the minimum value for the wrapped byte value.
+	 *
+	 * @param value the minimum value
+	 * @return this object
+	 */
+	@Override
+	public @NotNull UByteWrapper min(@Range(from = 0, to = Byte.MIN_VALUE) int value) {
+		synchronized (lock) {
+			min = (byte) value;
+			return this;
+		}
+	}
+	
+	/**
+	 * Converts a primitive wrapper to one of type object
+	 *
+	 * @return a new wrapper object with the contents of the main wrapper
+	 */
+	@Override
+	public @NotNull UObjectWrapper<Byte> toObjectWrapper() {
+		return apply((int number) -> (Byte) ((byte) number));
 	}
 	
 }

@@ -20,24 +20,13 @@ public final class UObjects {
 	 * ----------------------------------------------------- */
 	
 	/**
-	 * Creates a new instance of {@link UObjectWrapper} with the specified value.
+	 * Creates a new instance of {@link UByteWrapper} with the specified value.
 	 *
-	 * @param <T>   the type of the value
-	 * @param value the value to wrap
-	 * @return a new UObjectWrapper instance containing the specified value
+	 * @param value the byte value to wrap
+	 * @return a new UByteWrapper instance containing the specified value
 	 */
-	public static <T> @NonNull UObjectWrapper<T> wrapper(@Nullable T value) {
-		return new UObjectWrapperImpl<>(value);
-	}
-	
-	/**
-	 * Creates a new instance of {@link UObjectWrapper} with no initial value.
-	 *
-	 * @param <T> the type of the value
-	 * @return a new UObjectWrapper instance with no initial value
-	 */
-	public static <T> @NonNull UObjectWrapper<T> wrapper() {
-		return new UObjectWrapperImpl<>();
+	public static @NonNull UByteWrapper byteWrapper(@IntRange(from = Byte.MIN_VALUE, to = Byte.MAX_VALUE) int value) {
+		return new UByteWrapperImpl(value);
 	}
 	
 	/**
@@ -51,23 +40,23 @@ public final class UObjects {
 	}
 	
 	/**
-	 * Creates a new instance of {@link UByteWrapper} with the specified value.
+	 * Creates a new instance of {@link UDoubleWrapper} with the specified value.
 	 *
-	 * @param value the byte value to wrap
-	 * @return a new UByteWrapper instance containing the specified value
+	 * @param value the double value to wrap
+	 * @return a new UDoubleWrapper instance containing the specified value
 	 */
-	public static @NonNull UByteWrapper byteWrapper(@IntRange(from = Byte.MIN_VALUE, to = Byte.MAX_VALUE) int value) {
-		return new UByteWrapperImpl(value);
+	public static @NonNull UDoubleWrapper doubleWrapper(double value) {
+		return new UDoubleWrapperImpl(value);
 	}
 	
 	/**
-	 * Creates a new instance of {@link UShortWrapper} with the specified value.
+	 * Creates a new instance of {@link UFloatWrapper} with the specified value.
 	 *
-	 * @param value the short value to wrap
-	 * @return a new UShortWrapper instance containing the specified value
+	 * @param value the float value to wrap
+	 * @return a new UFloatWrapper instance containing the specified value
 	 */
-	public static @NonNull UShortWrapper shortWrapper(@IntRange(from = Short.MIN_VALUE, to = Short.MAX_VALUE) int value) {
-		return new UShortWrapperImpl(value);
+	public static @NonNull UFloatWrapper floatWrapper(float value) {
+		return new UFloatWrapperImpl(value);
 	}
 	
 	/**
@@ -91,23 +80,34 @@ public final class UObjects {
 	}
 	
 	/**
-	 * Creates a new instance of {@link UFloatWrapper} with the specified value.
+	 * Creates a new instance of {@link UShortWrapper} with the specified value.
 	 *
-	 * @param value the float value to wrap
-	 * @return a new UFloatWrapper instance containing the specified value
+	 * @param value the short value to wrap
+	 * @return a new UShortWrapper instance containing the specified value
 	 */
-	public static @NonNull UFloatWrapper floatWrapper(float value) {
-		return new UFloatWrapperImpl(value);
+	public static @NonNull UShortWrapper shortWrapper(@IntRange(from = Short.MIN_VALUE, to = Short.MAX_VALUE) int value) {
+		return new UShortWrapperImpl(value);
 	}
 	
 	/**
-	 * Creates a new instance of {@link UDoubleWrapper} with the specified value.
+	 * Creates a new instance of {@link UObjectWrapper} with no initial value.
 	 *
-	 * @param value the double value to wrap
-	 * @return a new UDoubleWrapper instance containing the specified value
+	 * @param <T> the type of the value
+	 * @return a new UObjectWrapper instance with no initial value
 	 */
-	public static @NonNull UDoubleWrapper doubleWrapper(double value) {
-		return new UDoubleWrapperImpl(value);
+	public static <T> @NonNull UObjectWrapper<T> wrapper() {
+		return new UObjectWrapperImpl<>();
+	}
+	
+	/**
+	 * Creates a new instance of {@link UObjectWrapper} with the specified value.
+	 *
+	 * @param <T>   the type of the value
+	 * @param value the value to wrap
+	 * @return a new UObjectWrapper instance containing the specified value
+	 */
+	public static <T> @NonNull UObjectWrapper<T> wrapper(@Nullable T value) {
+		return new UObjectWrapperImpl<>(value);
 	}
 	
 }

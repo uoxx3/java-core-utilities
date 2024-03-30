@@ -65,6 +65,16 @@ public enum UArchitecture {
 	 * ----------------------------------------------------- */
 	
 	/**
+	 * Retrieves the current running architecture based on the JVM properties.
+	 *
+	 * @return the UArchitecture instance representing the current running architecture
+	 */
+	public static @NotNull UArchitecture currentRunningArchitecture() {
+		// Get platform name from JVM properties
+		return fromNameOrUnknown(System.getProperty("os.arch"));
+	}
+	
+	/**
 	 * Retrieves a UArchitecture instance from a given name.
 	 *
 	 * @param name the name of the architecture
@@ -100,16 +110,6 @@ public enum UArchitecture {
 	 */
 	public static @NotNull UArchitecture fromNameOrUnknown(@NotNull CharSequence name) {
 		return fromName(name).orElse(UNKNOWN);
-	}
-	
-	/**
-	 * Retrieves the current running architecture based on the JVM properties.
-	 *
-	 * @return the UArchitecture instance representing the current running architecture
-	 */
-	public static @NotNull UArchitecture currentRunningArchitecture() {
-		// Get platform name from JVM properties
-		return fromNameOrUnknown(System.getProperty("os.arch"));
 	}
 	
 }

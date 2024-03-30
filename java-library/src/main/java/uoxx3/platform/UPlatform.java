@@ -87,6 +87,16 @@ public enum UPlatform {
 	 * ----------------------------------------------------- */
 	
 	/**
+	 * Retrieves the current running platform based on the JVM properties.
+	 *
+	 * @return the UPlatform instance representing the current running platform
+	 */
+	public static @NotNull UPlatform currentRunningPlatform() {
+		// Get platform name from JVM properties
+		return fromNameOrUnknown(System.getProperty("os.name"));
+	}
+	
+	/**
 	 * Retrieves a UPlatform instance from a given name.
 	 *
 	 * @param name the name of the platform
@@ -120,16 +130,6 @@ public enum UPlatform {
 	 */
 	public static @NotNull UPlatform fromNameOrUnknown(@NotNull CharSequence name) {
 		return fromName(name).orElse(UNKNOWN);
-	}
-	
-	/**
-	 * Retrieves the current running platform based on the JVM properties.
-	 *
-	 * @return the UPlatform instance representing the current running platform
-	 */
-	public static @NotNull UPlatform currentRunningPlatform() {
-		// Get platform name from JVM properties
-		return fromNameOrUnknown(System.getProperty("os.name"));
 	}
 	
 }

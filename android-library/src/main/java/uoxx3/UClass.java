@@ -19,41 +19,34 @@ public final class UClass {
 	}
 	
 	/* -----------------------------------------------------
-	 * Primitive verification methods
+	 * Methods
 	 * ----------------------------------------------------- */
 	
 	/**
-	 * Checks if a given class is a primitive type, optionally including wrapper types.
+	 * Returns the component type of one-dimensional array.
 	 *
-	 * @param cls                 the class to check, not null
-	 * @param includeWrapperTypes if true, also considers wrapper types as primitive types
-	 * @return true if the class is a primitive type, false otherwise
+	 * @param array the array, not null
+	 * @param <T>   the type of the array elements
+	 * @return the component type of the array
 	 */
-	public static boolean isPrimitiveType(@NonNull Class<?> cls, boolean includeWrapperTypes) {
-		UAssert.paramNotNull(cls, "Class<?> cls");
-		boolean realPrimitive = cls.isPrimitive();
-		if (!includeWrapperTypes) return realPrimitive;
-		
-		for (Class<?> primitiveType : IUClassConstants.CLASS_PRIMITIVE_TYPES_MAP) {
-			if (cls == primitiveType || realPrimitive) return true;
-		}
-		
-		return false;
+	@SuppressWarnings("unchecked")
+	public static <T> @NonNull Class<T> arrayComponentType(@NonNull T[] array) {
+		UAssert.paramNotNull(array, "T[] array");
+		return (Class<T>) multiDimensionalArrayComponentType(array);
 	}
 	
 	/**
-	 * Checks if a given class is a primitive type, optionally including wrapper types.
+	 * Returns the component type of two-dimensional array.
 	 *
-	 * @param cls the class to check, not null
-	 * @return true if the class is a primitive type, false otherwise
+	 * @param array the array, not null
+	 * @param <T>   the type of the array elements
+	 * @return the component type of the array
 	 */
-	public static boolean isPrimitiveType(@NonNull Class<?> cls) {
-		return isPrimitiveType(cls, false);
+	@SuppressWarnings("unchecked")
+	public static <T> @NonNull Class<T> arrayComponentType(@NonNull T[][] array) {
+		UAssert.paramNotNull(array, "T[][] array");
+		return (Class<T>) multiDimensionalArrayComponentType(array);
 	}
-	
-	/* -----------------------------------------------------
-	 * Dependency tree methods
-	 * ----------------------------------------------------- */
 	
 	/**
 	 * Builds a stack representing the inheritance tree of a class up to a specified depth.
@@ -113,65 +106,33 @@ public final class UClass {
 		return classTree(cls, -1);
 	}
 	
-	/* -----------------------------------------------------
-	 * Vararg methods
-	 * ----------------------------------------------------- */
-	
 	/**
-	 * Returns an array of classes representing the types of the varargs objects, including null types.
+	 * Checks if a given class is a primitive type, optionally including wrapper types.
 	 *
-	 * @param args the varargs objects, not null
-	 * @return an array of classes representing the types of the varargs objects
+	 * @param cls                 the class to check, not null
+	 * @param includeWrapperTypes if true, also considers wrapper types as primitive types
+	 * @return true if the class is a primitive type, false otherwise
 	 */
-	public static @NonNull Class<?>[] varargTypes(@NonNull Object... args) {
-		UAssert.paramNotNull(args, "Object[] args");
-		return Arrays.stream(args)
-			.map(o -> o == null ? Object.class : o.getClass())
-			.toArray(Class[]::new);
+	public static boolean isPrimitiveType(@NonNull Class<?> cls, boolean includeWrapperTypes) {
+		UAssert.paramNotNull(cls, "Class<?> cls");
+		boolean realPrimitive = cls.isPrimitive();
+		if (!includeWrapperTypes) return realPrimitive;
+		
+		for (Class<?> primitiveType : IUClassConstants.CLASS_PRIMITIVE_TYPES_MAP) {
+			if (cls == primitiveType || realPrimitive) return true;
+		}
+		
+		return false;
 	}
 	
 	/**
-	 * Returns an array of classes representing the types of the varargs objects, excluding null types.
+	 * Checks if a given class is a primitive type, optionally including wrapper types.
 	 *
-	 * @param args the varargs objects, not null
-	 * @return an array of classes representing the types of the varargs objects, excluding null types
+	 * @param cls the class to check, not null
+	 * @return true if the class is a primitive type, false otherwise
 	 */
-	public static @NonNull Class<?>[] varargTypesNotNull(@NonNull Object... args) {
-		UAssert.paramNotNull(args, "Object[] args");
-		return Arrays.stream(args)
-			.filter(Objects::nonNull)
-			.map(Object::getClass)
-			.toArray(Class[]::new);
-	}
-	
-	/* -----------------------------------------------------
-	 * Array individual type methods
-	 * ----------------------------------------------------- */
-	
-	/**
-	 * Returns the component type of one-dimensional array.
-	 *
-	 * @param array the array, not null
-	 * @param <T>   the type of the array elements
-	 * @return the component type of the array
-	 */
-	@SuppressWarnings("unchecked")
-	public static <T> @NonNull Class<T> arrayComponentType(@NonNull T[] array) {
-		UAssert.paramNotNull(array, "T[] array");
-		return (Class<T>) multiDimensionalArrayComponentType(array);
-	}
-	
-	/**
-	 * Returns the component type of two-dimensional array.
-	 *
-	 * @param array the array, not null
-	 * @param <T>   the type of the array elements
-	 * @return the component type of the array
-	 */
-	@SuppressWarnings("unchecked")
-	public static <T> @NonNull Class<T> arrayComponentType(@NonNull T[][] array) {
-		UAssert.paramNotNull(array, "T[][] array");
-		return (Class<T>) multiDimensionalArrayComponentType(array);
+	public static boolean isPrimitiveType(@NonNull Class<?> cls) {
+		return isPrimitiveType(cls, false);
 	}
 	
 	/**
@@ -205,6 +166,33 @@ public final class UClass {
 		} catch (ClassNotFoundException e) {
 			throw new RuntimeException("Cannot determine the type of the array.", e);
 		}
+	}
+	
+	/**
+	 * Returns an array of classes representing the types of the varargs objects, including null types.
+	 *
+	 * @param args the varargs objects, not null
+	 * @return an array of classes representing the types of the varargs objects
+	 */
+	public static @NonNull Class<?>[] varargTypes(@NonNull Object... args) {
+		UAssert.paramNotNull(args, "Object[] args");
+		return Arrays.stream(args)
+			.map(o -> o == null ? Object.class : o.getClass())
+			.toArray(Class[]::new);
+	}
+	
+	/**
+	 * Returns an array of classes representing the types of the varargs objects, excluding null types.
+	 *
+	 * @param args the varargs objects, not null
+	 * @return an array of classes representing the types of the varargs objects, excluding null types
+	 */
+	public static @NonNull Class<?>[] varargTypesNotNull(@NonNull Object... args) {
+		UAssert.paramNotNull(args, "Object[] args");
+		return Arrays.stream(args)
+			.filter(Objects::nonNull)
+			.map(Object::getClass)
+			.toArray(Class[]::new);
 	}
 	
 }
