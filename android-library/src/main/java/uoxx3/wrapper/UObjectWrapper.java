@@ -1,7 +1,9 @@
 package uoxx3.wrapper;
 
 import androidx.annotation.NonNull;
+import org.jetbrains.annotations.Nullable;
 
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -15,42 +17,22 @@ import java.util.function.Supplier;
 public interface UObjectWrapper<T> extends Supplier<T> {
 	
 	/**
-	 * Checks if the wrapped object is {@code <null>}.
-	 *
-	 * @return true if the wrapped object is {@code <null>}, otherwise false
-	 */
-	default boolean isNull() {
-		return get() == null;
-	}
-	
-	/**
-	 * Checks if the wrapped object is not {@code <null>}.
-	 *
-	 * @return {@code true} if the wrapped object is not {@code <null>}, otherwise {@code false}
-	 */
-	default boolean isNotNull() {
-		return !isNull();
-	}
-	
-	/**
-	 * Performs the given action on the wrapped object if it is not {@code <null>}.
+	 * Performs the given action on the wrapped object and returns the same object.
 	 *
 	 * @param consumer the action to perform
+	 * @return this object
 	 */
-	default void ifNotNull(@NonNull Consumer<T> consumer) {
-		if (isNull()) return;
-		consumer.accept(get());
-	}
+	@NonNull
+	UObjectWrapper<T> also(@NonNull Consumer<T> consumer);
 	
 	/**
-	 * Gets the wrapped object, throwing a NullPointerException if it is {@code <null>}.
+	 * Performs the given action on the wrapped object if it is not null and returns the same object.
 	 *
-	 * @return the wrapped object
-	 * @throws NullPointerException if the wrapped object is {@code <null>}
+	 * @param consumer the action to perform
+	 * @return this object
 	 */
-	default @NonNull Optional<T> getNotNull() {
-		return Optional.ofNullable(get());
-	}
+	@NonNull
+	UObjectWrapper<T> alsoNotNull(@NonNull Consumer<T> consumer);
 	
 	/**
 	 * Applies the given function to the wrapped object and wraps the result.
@@ -71,21 +53,62 @@ public interface UObjectWrapper<T> extends Supplier<T> {
 	<R> @NonNull UObjectWrapper<R> applyNotNull(@NonNull Function<Optional<T>, R> function);
 	
 	/**
-	 * Performs the given action on the wrapped object and returns the same object.
+	 * Checks if the content is equal to the specified object.
 	 *
-	 * @param consumer the action to perform
-	 * @return this object
+	 * @param other The object to compare against.
+	 * @return {@code true} if the array content is equal to the specified object, {@code false} otherwise.
 	 */
-	@NonNull
-	UObjectWrapper<T> also(@NonNull Consumer<T> consumer);
+	default boolean contentEquals(@Nullable T other) {
+		return Objects.deepEquals(get(), other);
+	}
 	
 	/**
-	 * Performs the given action on the wrapped object if it is not null and returns the same object.
+	 * Checks if the content is equal to the specified object.
+	 *
+	 * @param other The object to compare against.
+	 * @return {@code true} if the array content is equal to the specified object, {@code false} otherwise.
+	 */
+	@SuppressWarnings("DataFlowIssue")
+	default boolean contentEquals(@Nullable UObjectWrapper<T> other) {
+		return contentEquals(other.get());
+	}
+	
+	/**
+	 * Gets the wrapped object, throwing a NullPointerException if it is {@code <null>}.
+	 *
+	 * @return the wrapped object
+	 * @throws NullPointerException if the wrapped object is {@code <null>}
+	 */
+	default @NonNull Optional<T> getNotNull() {
+		return Optional.ofNullable(get());
+	}
+	
+	/**
+	 * Performs the given action on the wrapped object if it is not {@code <null>}.
 	 *
 	 * @param consumer the action to perform
-	 * @return this object
 	 */
-	@NonNull
-	UObjectWrapper<T> alsoNotNull(@NonNull Consumer<T> consumer);
+	default void ifNotNull(@NonNull Consumer<T> consumer) {
+		if (isNull()) return;
+		consumer.accept(get());
+	}
+	
+	/**
+	 * Checks if the wrapped object is not {@code <null>}.
+	 *
+	 * @return {@code true} if the wrapped object is not {@code <null>}, otherwise {@code false}
+	 */
+	default boolean isNotNull() {
+		return !isNull();
+	}
+	
+	/**
+	 * Checks if the wrapped object is {@code <null>}.
+	 *
+	 * @return true if the wrapped object is {@code <null>}, otherwise false
+	 */
+	default boolean isNull() {
+		return get() == null;
+	}
 	
 }

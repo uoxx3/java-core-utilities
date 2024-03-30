@@ -59,31 +59,15 @@ public final class UFloatWrapperImpl implements UFloatWrapper {
 	 * ----------------------------------------------------- */
 	
 	/**
-	 * Sets the minimum value for the wrapped primitive value.
+	 * Performs the given action on the wrapped integer value and returns the same object.
 	 *
-	 * @param value the minimum value
+	 * @param consumer the action to perform
 	 * @return this object
 	 */
 	@Override
-	public @NotNull UFloatWrapper min(float value) {
-		synchronized (lock) {
-			min = value;
-			return this;
-		}
-	}
-	
-	/**
-	 * Sets the maximum value for the wrapped primitive value.
-	 *
-	 * @param value the maximum value
-	 * @return this object
-	 */
-	@Override
-	public @NotNull UFloatWrapper max(float value) {
-		synchronized (lock) {
-			max = value;
-			return this;
-		}
+	public @NotNull UFloatWrapper also(@NotNull DoubleConsumer consumer) {
+		consumer.accept(getAsFloat());
+		return this;
 	}
 	
 	/**
@@ -178,18 +162,6 @@ public final class UFloatWrapperImpl implements UFloatWrapper {
 	}
 	
 	/**
-	 * Performs the given action on the wrapped integer value and returns the same object.
-	 *
-	 * @param consumer the action to perform
-	 * @return this object
-	 */
-	@Override
-	public @NotNull UFloatWrapper also(@NotNull DoubleConsumer consumer) {
-		consumer.accept(getAsFloat());
-		return this;
-	}
-	
-	/**
 	 * Gets a result.
 	 *
 	 * @return a result
@@ -199,6 +171,44 @@ public final class UFloatWrapperImpl implements UFloatWrapper {
 		synchronized (lock) {
 			return Math.max(min, Math.min(value, max));
 		}
+	}
+	
+	/**
+	 * Sets the maximum value for the wrapped primitive value.
+	 *
+	 * @param value the maximum value
+	 * @return this object
+	 */
+	@Override
+	public @NotNull UFloatWrapper max(float value) {
+		synchronized (lock) {
+			max = value;
+			return this;
+		}
+	}
+	
+	/**
+	 * Sets the minimum value for the wrapped primitive value.
+	 *
+	 * @param value the minimum value
+	 * @return this object
+	 */
+	@Override
+	public @NotNull UFloatWrapper min(float value) {
+		synchronized (lock) {
+			min = value;
+			return this;
+		}
+	}
+	
+	/**
+	 * Converts a primitive wrapper to one of type object
+	 *
+	 * @return a new wrapper object with the contents of the main wrapper
+	 */
+	@Override
+	public @NotNull UObjectWrapper<Float> toObjectWrapper() {
+		return apply((double number) -> (Float) ((float) number));
 	}
 	
 }

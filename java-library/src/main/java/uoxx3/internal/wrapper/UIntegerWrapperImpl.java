@@ -63,31 +63,15 @@ public final class UIntegerWrapperImpl implements UIntegerWrapper {
 	 * ----------------------------------------------------- */
 	
 	/**
-	 * Sets the minimum value for the wrapped primitive value.
+	 * Performs the given action on the wrapped integer value and returns the same object.
 	 *
-	 * @param value the minimum value
+	 * @param consumer the action to perform
 	 * @return this object
 	 */
 	@Override
-	public @NotNull UIntegerWrapper min(int value) {
-		synchronized (lock) {
-			min = value;
-			return this;
-		}
-	}
-	
-	/**
-	 * Sets the maximum value for the wrapped primitive value.
-	 *
-	 * @param value the maximum value
-	 * @return this object
-	 */
-	@Override
-	public @NotNull UIntegerWrapper max(int value) {
-		synchronized (lock) {
-			max = value;
-			return this;
-		}
+	public @NotNull UIntegerWrapper also(@NotNull IntConsumer consumer) {
+		consumer.accept(getAsInt());
+		return this;
 	}
 	
 	/**
@@ -182,18 +166,6 @@ public final class UIntegerWrapperImpl implements UIntegerWrapper {
 	}
 	
 	/**
-	 * Performs the given action on the wrapped integer value and returns the same object.
-	 *
-	 * @param consumer the action to perform
-	 * @return this object
-	 */
-	@Override
-	public @NotNull UIntegerWrapper also(@NotNull IntConsumer consumer) {
-		consumer.accept(getAsInt());
-		return this;
-	}
-	
-	/**
 	 * Gets a result.
 	 *
 	 * @return a result
@@ -203,6 +175,44 @@ public final class UIntegerWrapperImpl implements UIntegerWrapper {
 		synchronized (lock) {
 			return Math.max(min, Math.min(value, max));
 		}
+	}
+	
+	/**
+	 * Sets the maximum value for the wrapped primitive value.
+	 *
+	 * @param value the maximum value
+	 * @return this object
+	 */
+	@Override
+	public @NotNull UIntegerWrapper max(int value) {
+		synchronized (lock) {
+			max = value;
+			return this;
+		}
+	}
+	
+	/**
+	 * Sets the minimum value for the wrapped primitive value.
+	 *
+	 * @param value the minimum value
+	 * @return this object
+	 */
+	@Override
+	public @NotNull UIntegerWrapper min(int value) {
+		synchronized (lock) {
+			min = value;
+			return this;
+		}
+	}
+	
+	/**
+	 * Converts a primitive wrapper to one of type object
+	 *
+	 * @return a new wrapper object with the contents of the main wrapper
+	 */
+	@Override
+	public @NotNull UObjectWrapper<Integer> toObjectWrapper() {
+		return apply((int number) -> (Integer) number);
 	}
 	
 }

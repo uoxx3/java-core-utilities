@@ -54,6 +54,31 @@ public final class UObjectWrapperImpl<T> implements UObjectWrapper<T> {
 	 * ----------------------------------------------------- */
 	
 	/**
+	 * Performs the given action on the wrapped object and returns the same object.
+	 *
+	 * @param consumer the action to perform
+	 * @return this object
+	 */
+	@Override
+	public @NonNull UObjectWrapper<T> also(@NonNull Consumer<T> consumer) {
+		// We only execute the action and return the same object
+		consumer.accept(get());
+		return this;
+	}
+	
+	/**
+	 * Performs the given action on the wrapped object if it is not null and returns the same object.
+	 *
+	 * @param consumer the action to perform
+	 * @return this object
+	 */
+	@Override
+	public @NonNull UObjectWrapper<T> alsoNotNull(@NonNull Consumer<T> consumer) {
+		if (isNotNull()) consumer.accept(get());
+		return this;
+	}
+	
+	/**
 	 * Applies the given function to the wrapped object and wraps the result.
 	 *
 	 * @param <R>      the type of the result
@@ -79,31 +104,6 @@ public final class UObjectWrapperImpl<T> implements UObjectWrapper<T> {
 		return new UObjectWrapperImpl<>(
 			function.apply(Optional.ofNullable(get()))
 		);
-	}
-	
-	/**
-	 * Performs the given action on the wrapped object and returns the same object.
-	 *
-	 * @param consumer the action to perform
-	 * @return this object
-	 */
-	@Override
-	public @NonNull UObjectWrapper<T> also(@NonNull Consumer<T> consumer) {
-		// We only execute the action and return the same object
-		consumer.accept(get());
-		return this;
-	}
-	
-	/**
-	 * Performs the given action on the wrapped object if it is not null and returns the same object.
-	 *
-	 * @param consumer the action to perform
-	 * @return this object
-	 */
-	@Override
-	public @NonNull UObjectWrapper<T> alsoNotNull(@NonNull Consumer<T> consumer) {
-		if (isNotNull()) consumer.accept(get());
-		return this;
 	}
 	
 	/**

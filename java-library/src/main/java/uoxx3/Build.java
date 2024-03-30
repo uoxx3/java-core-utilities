@@ -61,38 +61,6 @@ public final class Build {
 	 * ----------------------------------------------------- */
 	
 	/**
-	 * Tests if this hashtable maps no keys to values.
-	 *
-	 * @return {@code true} if this hashtable maps no keys to values;
-	 *    {@code false} otherwise.
-	 */
-	public boolean isEmpty() {
-		return buildInfoProperties.isEmpty();
-	}
-	
-	/**
-	 * Retrieves the value associated with the specified key.
-	 *
-	 * @param key the key whose associated value is to be returned
-	 * @return an {@code Optional} containing the value to which the specified key is mapped,
-	 * 	or an empty {@code Optional} if this map contains no mapping for the key
-	 */
-	public @NotNull Optional<String> get(@NotNull @PropertyKey(resourceBundle = RESOURCE_BUNDLE_NAME) String key) {
-		return Optional.ofNullable(buildInfoProperties.getProperty(key));
-	}
-	
-	/**
-	 * Retrieves the value associated with the specified key, or a default value if the key is not found.
-	 *
-	 * @param key   the key whose associated value is to be returned
-	 * @param value the default value to return if the key is not found
-	 * @return the value associated with the specified key, or the default value if the key is not found
-	 */
-	public @NotNull String get(@NotNull @PropertyKey(resourceBundle = RESOURCE_BUNDLE_NAME) String key, @NotNull String value) {
-		return get(key).orElse(value);
-	}
-	
-	/**
 	 * Gets an unmodifiable set view of the mappings contained in this {@code Properties} object.
 	 * The set is a transformed view of the original set, where each entry is converted to an
 	 * immutable {@code Map.Entry<String, String>} object. Changes to the original set are not
@@ -107,6 +75,38 @@ public final class Build {
 				(String) it.getKey(),
 				(String) it.getValue())
 			).collect(Collectors.toUnmodifiableSet());
+	}
+	
+	/**
+	 * Retrieves the value associated with the specified key, or a default value if the key is not found.
+	 *
+	 * @param key   the key whose associated value is to be returned
+	 * @param value the default value to return if the key is not found
+	 * @return the value associated with the specified key, or the default value if the key is not found
+	 */
+	public @NotNull String get(@NotNull @PropertyKey(resourceBundle = RESOURCE_BUNDLE_NAME) String key, @NotNull String value) {
+		return get(key).orElse(value);
+	}
+	
+	/**
+	 * Retrieves the value associated with the specified key.
+	 *
+	 * @param key the key whose associated value is to be returned
+	 * @return an {@code Optional} containing the value to which the specified key is mapped,
+	 * 	or an empty {@code Optional} if this map contains no mapping for the key
+	 */
+	public @NotNull Optional<String> get(@NotNull @PropertyKey(resourceBundle = RESOURCE_BUNDLE_NAME) String key) {
+		return Optional.ofNullable(buildInfoProperties.getProperty(key));
+	}
+	
+	/**
+	 * Tests if this hashtable maps no keys to values.
+	 *
+	 * @return {@code true} if this hashtable maps no keys to values;
+	 *    {@code false} otherwise.
+	 */
+	public boolean isEmpty() {
+		return buildInfoProperties.isEmpty();
 	}
 	
 	/* -----------------------------------------------------

@@ -60,43 +60,15 @@ public final class UShortWrapperImpl implements UShortWrapper {
 	 * ----------------------------------------------------- */
 	
 	/**
-	 * Gets a short value.
+	 * Performs the given action on the wrapped integer value and returns the same object.
 	 *
-	 * @return a short value
-	 */
-	@Override
-	public short getAsShort() {
-		synchronized (lock) {
-			return (short) Math.max(min, Math.min(value, max));
-		}
-	}
-	
-	/**
-	 * Sets the minimum value for the wrapped short value.
-	 *
-	 * @param value the minimum value
+	 * @param consumer the action to perform
 	 * @return this object
 	 */
 	@Override
-	public @NotNull UShortWrapper min(@Range(from = 0, to = Short.MIN_VALUE) int value) {
-		synchronized (lock) {
-			min = (short) value;
-			return this;
-		}
-	}
-	
-	/**
-	 * Sets the maximum value for the wrapped short value.
-	 *
-	 * @param value the maximum value
-	 * @return this object
-	 */
-	@Override
-	public @NotNull UShortWrapper max(@Range(from = 0, to = Short.MAX_VALUE) int value) {
-		synchronized (lock) {
-			max = (short) value;
-			return this;
-		}
+	public @NotNull UShortWrapper also(@NotNull IntConsumer consumer) {
+		consumer.accept(getAsShort());
+		return this;
 	}
 	
 	/**
@@ -191,15 +163,53 @@ public final class UShortWrapperImpl implements UShortWrapper {
 	}
 	
 	/**
-	 * Performs the given action on the wrapped integer value and returns the same object.
+	 * Gets a short value.
 	 *
-	 * @param consumer the action to perform
+	 * @return a short value
+	 */
+	@Override
+	public short getAsShort() {
+		synchronized (lock) {
+			return (short) Math.max(min, Math.min(value, max));
+		}
+	}
+	
+	/**
+	 * Sets the maximum value for the wrapped short value.
+	 *
+	 * @param value the maximum value
 	 * @return this object
 	 */
 	@Override
-	public @NotNull UShortWrapper also(@NotNull IntConsumer consumer) {
-		consumer.accept(getAsShort());
-		return this;
+	public @NotNull UShortWrapper max(@Range(from = 0, to = Short.MAX_VALUE) int value) {
+		synchronized (lock) {
+			max = (short) value;
+			return this;
+		}
+	}
+	
+	/**
+	 * Sets the minimum value for the wrapped short value.
+	 *
+	 * @param value the minimum value
+	 * @return this object
+	 */
+	@Override
+	public @NotNull UShortWrapper min(@Range(from = 0, to = Short.MIN_VALUE) int value) {
+		synchronized (lock) {
+			min = (short) value;
+			return this;
+		}
+	}
+	
+	/**
+	 * Converts a primitive wrapper to one of type object
+	 *
+	 * @return a new wrapper object with the contents of the main wrapper
+	 */
+	@Override
+	public @NotNull UObjectWrapper<Short> toObjectWrapper() {
+		return apply((int number) -> (Short) ((short) number));
 	}
 	
 }

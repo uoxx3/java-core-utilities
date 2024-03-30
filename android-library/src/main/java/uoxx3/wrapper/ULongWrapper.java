@@ -6,25 +6,16 @@ import java.util.function.LongConsumer;
 import java.util.function.LongFunction;
 import java.util.function.LongSupplier;
 
-public interface ULongWrapper extends LongSupplier {
+public interface ULongWrapper extends LongSupplier, UNumberWrapper<Long, ULongWrapper> {
 	
 	/**
-	 * Sets the minimum value for the wrapped long value.
+	 * Performs the given action on the wrapped integer value and returns the same object.
 	 *
-	 * @param value the minimum value
+	 * @param consumer the action to perform
 	 * @return this object
 	 */
 	@NonNull
-	ULongWrapper min(long value);
-	
-	/**
-	 * Sets the maximum value for the wrapped long value.
-	 *
-	 * @param value the maximum value
-	 * @return this object
-	 */
-	@NonNull
-	ULongWrapper max(long value);
+	ULongWrapper also(@NonNull LongConsumer consumer);
 	
 	/**
 	 * Applies the given function to the wrapped integer value and wraps the result.
@@ -90,13 +81,63 @@ public interface ULongWrapper extends LongSupplier {
 	UDoubleWrapper apply(@NonNull UDoubleWrapper.DoubleOnlyFunction function);
 	
 	/**
-	 * Performs the given action on the wrapped integer value and returns the same object.
+	 * Checks if the array content is equal to the specified double value within a default tolerance.
 	 *
-	 * @param consumer the action to perform
+	 * @param other The double value to compare against.
+	 * @return true if the array content is equal to the specified double value within the default tolerance, false otherwise.
+	 */
+	default boolean contentEquals(double other) {
+		return contentEquals(other, UDoubleWrapper.EQUALS_TOLERANCE);
+	}
+	
+	/**
+	 * Checks if the array content is equal to the specified double value within the specified tolerance.
+	 *
+	 * @param other     The double value to compare against.
+	 * @param tolerance The tolerance for the comparison.
+	 * @return true if the array content is equal to the specified double value within the specified tolerance, false otherwise.
+	 */
+	default boolean contentEquals(double other, double tolerance) {
+		return Math.abs(getAsLong() - other) <= tolerance;
+	}
+	
+	/**
+	 * Checks if the array content is equal to the specified long value.
+	 *
+	 * @param other The long value to compare against.
+	 * @return true if the array content is equal to the specified long value, false otherwise.
+	 */
+	default boolean contentEquals(long other) {
+		return getAsLong() == other;
+	}
+	
+	/**
+	 * Checks if the array content is equal to the content of the specified UByteWrapper.
+	 *
+	 * @param other The UByteWrapper to compare against.
+	 * @return true if the array content is equal to the content of the specified UByteWrapper, false otherwise.
+	 */
+	default boolean contentEquals(@NonNull ULongWrapper other) {
+		return contentEquals(other.getAsLong());
+	}
+	
+	/**
+	 * Sets the maximum value for the wrapped long value.
+	 *
+	 * @param value the maximum value
 	 * @return this object
 	 */
 	@NonNull
-	ULongWrapper also(@NonNull LongConsumer consumer);
+	ULongWrapper max(long value);
+	
+	/**
+	 * Sets the minimum value for the wrapped long value.
+	 *
+	 * @param value the minimum value
+	 * @return this object
+	 */
+	@NonNull
+	ULongWrapper min(long value);
 	
 	/**
 	 * A functional interface for functions that operate on short values only.

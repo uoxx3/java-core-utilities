@@ -47,28 +47,15 @@ public final class UCharWrapperImpl implements UCharWrapper {
 	 * ----------------------------------------------------- */
 	
 	/**
-	 * Gets a char value.
+	 * Performs the given action on the wrapped char value and returns the same object.
 	 *
-	 * @return a char value
+	 * @param consumer the action to perform
+	 * @return this object
 	 */
 	@Override
-	public char getAsChar() {
-		synchronized (lock) {
-			return value;
-		}
-	}
-	
-	/**
-	 * Applies the given function to the wrapped char value and wraps the result.
-	 *
-	 * @param function the function to apply
-	 * @return a new UObjectWrapper containing the result of the function
-	 */
-	@Override
-	public @NonNull <R> UObjectWrapper<R> apply(@NonNull CharFunction<R> function) {
-		return new UObjectWrapperImpl<>(
-			function.apply(getAsChar())
-		);
+	public @NonNull UCharWrapper also(@NonNull CharConsumer consumer) {
+		consumer.accept(getAsChar());
+		return this;
 	}
 	
 	/**
@@ -85,15 +72,38 @@ public final class UCharWrapperImpl implements UCharWrapper {
 	}
 	
 	/**
-	 * Performs the given action on the wrapped char value and returns the same object.
+	 * Applies the given function to the wrapped char value and wraps the result.
 	 *
-	 * @param consumer the action to perform
-	 * @return this object
+	 * @param function the function to apply
+	 * @return a new UObjectWrapper containing the result of the function
 	 */
 	@Override
-	public @NonNull UCharWrapper also(@NonNull CharConsumer consumer) {
-		consumer.accept(getAsChar());
-		return this;
+	public @NonNull <R> UObjectWrapper<R> apply(@NonNull CharFunction<R> function) {
+		return new UObjectWrapperImpl<>(
+			function.apply(getAsChar())
+		);
+	}
+	
+	/**
+	 * Gets a char value.
+	 *
+	 * @return a char value
+	 */
+	@Override
+	public char getAsChar() {
+		synchronized (lock) {
+			return value;
+		}
+	}
+	
+	/**
+	 * Converts a primitive wrapper to one of type object
+	 *
+	 * @return a new wrapper object with the contents of the main wrapper
+	 */
+	@Override
+	public @NonNull UObjectWrapper<Character> toObjectWrapper() {
+		return apply((char character) -> (Character) character);
 	}
 	
 }

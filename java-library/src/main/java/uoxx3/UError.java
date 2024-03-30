@@ -15,8 +15,39 @@ public final class UError {
 	}
 	
 	/* -----------------------------------------------------
-	 * Root error methods
+	 * Methods
 	 * ----------------------------------------------------- */
+	
+	/**
+	 * Extracts the stack trace of a Throwable up to a specified depth.
+	 *
+	 * @param throwable the Throwable to extract the stack trace from, not null
+	 * @param deep      the maximum depth to search for the root cause, >= 0
+	 * @return the stack trace of the Throwable as a CharSequence
+	 */
+	public static @NotNull CharSequence extractStackTrace(@NotNull Throwable throwable, int deep) {
+		UAssert.paramNotNull(throwable, "Throwable throwable");
+		// We generate the objects in charge of extracting the error stack
+		StringWriter sw = new StringWriter();
+		PrintWriter pw = new PrintWriter(sw);
+		Throwable se = rootError(throwable, deep);
+		
+		// Using the method itself to print the error stack, it is used to extract the stack
+		se.printStackTrace(pw);
+		pw.flush();
+		
+		return sw.getBuffer();
+	}
+	
+	/**
+	 * Extracts the full stack trace of a Throwable.
+	 *
+	 * @param throwable the Throwable to extract the stack trace from, not null
+	 * @return the full stack trace of the Throwable as a CharSequence
+	 */
+	public static @NotNull CharSequence extractStackTrace(@NotNull Throwable throwable) {
+		return extractStackTrace(throwable, 0);
+	}
 	
 	/**
 	 * Returns the root cause of a Throwable up to a specified depth.
@@ -55,41 +86,6 @@ public final class UError {
 	 */
 	public static @NotNull Throwable rootError(@NotNull Throwable throwable) {
 		return rootError(throwable, 0);
-	}
-	
-	/* -----------------------------------------------------
-	 * Extract trace error methods
-	 * ----------------------------------------------------- */
-	
-	/**
-	 * Extracts the stack trace of a Throwable up to a specified depth.
-	 *
-	 * @param throwable the Throwable to extract the stack trace from, not null
-	 * @param deep      the maximum depth to search for the root cause, >= 0
-	 * @return the stack trace of the Throwable as a CharSequence
-	 */
-	public static @NotNull CharSequence extractStackTrace(@NotNull Throwable throwable, int deep) {
-		UAssert.paramNotNull(throwable, "Throwable throwable");
-		// We generate the objects in charge of extracting the error stack
-		StringWriter sw = new StringWriter();
-		PrintWriter pw = new PrintWriter(sw);
-		Throwable se = rootError(throwable, deep);
-		
-		// Using the method itself to print the error stack, it is used to extract the stack
-		se.printStackTrace(pw);
-		pw.flush();
-		
-		return sw.getBuffer();
-	}
-	
-	/**
-	 * Extracts the full stack trace of a Throwable.
-	 *
-	 * @param throwable the Throwable to extract the stack trace from, not null
-	 * @return the full stack trace of the Throwable as a CharSequence
-	 */
-	public static @NotNull CharSequence extractStackTrace(@NotNull Throwable throwable) {
-		return extractStackTrace(throwable, 0);
 	}
 	
 }

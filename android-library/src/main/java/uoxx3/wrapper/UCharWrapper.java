@@ -11,13 +11,13 @@ import uoxx3.functional.supplier.CharSupplier;
 public interface UCharWrapper extends CharSupplier {
 	
 	/**
-	 * Applies the given function to the wrapped char value and wraps the result.
+	 * Performs the given action on the wrapped char value and returns the same object.
 	 *
-	 * @param <R>      the type of the result
-	 * @param function the function to apply
-	 * @return a new UObjectWrapper containing the result of the function
+	 * @param consumer the action to perform
+	 * @return this object
 	 */
-	<R> @NonNull UObjectWrapper<R> apply(@NonNull CharFunction<R> function);
+	@NonNull
+	UCharWrapper also(@NonNull CharConsumer consumer);
 	
 	/**
 	 * Applies the given function to the wrapped character value and wraps the result.
@@ -29,13 +29,41 @@ public interface UCharWrapper extends CharSupplier {
 	UCharWrapper apply(@NonNull CharOnlyFunction function);
 	
 	/**
-	 * Performs the given action on the wrapped char value and returns the same object.
+	 * Applies the given function to the wrapped char value and wraps the result.
 	 *
-	 * @param consumer the action to perform
-	 * @return this object
+	 * @param <R>      the type of the result
+	 * @param function the function to apply
+	 * @return a new UObjectWrapper containing the result of the function
+	 */
+	<R> @NonNull UObjectWrapper<R> apply(@NonNull CharFunction<R> function);
+	
+	/**
+	 * Checks if the array content is equal to the specified double value within a default tolerance.
+	 *
+	 * @param other The double value to compare against.
+	 * @return true if the array content is equal to the specified double value within the default tolerance, false otherwise.
+	 */
+	default boolean contentEquals(char other) {
+		return getAsChar() == other;
+	}
+	
+	/**
+	 * Checks if the array content is equal to the content of the specified UByteWrapper.
+	 *
+	 * @param other The UByteWrapper to compare against.
+	 * @return true if the array content is equal to the content of the specified UByteWrapper, false otherwise.
+	 */
+	default boolean contentEquals(@NonNull UCharWrapper other) {
+		return contentEquals(other.getAsChar());
+	}
+	
+	/**
+	 * Converts a primitive wrapper to one of type object
+	 *
+	 * @return a new wrapper object with the contents of the main wrapper
 	 */
 	@NonNull
-	UCharWrapper also(@NonNull CharConsumer consumer);
+	UObjectWrapper<Character> toObjectWrapper();
 	
 	/**
 	 * A functional interface for functions that operate on double values only.
