@@ -2,6 +2,7 @@ package uoxx3.wrapper;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import uoxx3.UCopyable;
 
 import java.util.Objects;
 import java.util.Optional;
@@ -14,7 +15,7 @@ import java.util.function.Supplier;
  *
  * @param <T> the type of the wrapped object
  */
-public interface UObjectWrapper<T> extends Supplier<T> {
+public interface UObjectWrapper<T> extends Supplier<T>, UCopyable<UObjectWrapper<T>> {
 	
 	/**
 	 * Performs the given action on the wrapped object and returns the same object.

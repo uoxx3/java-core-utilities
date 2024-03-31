@@ -162,6 +162,16 @@ public final class ULongWrapperImpl implements ULongWrapper {
 	}
 	
 	/**
+	 * Creates a deep copy of the object.
+	 *
+	 * @return A deep copy of the object.
+	 */
+	@Override
+	public @NotNull ULongWrapper copy() {
+		return apply((long v) -> v);
+	}
+	
+	/**
 	 * Gets a result.
 	 *
 	 * @return a result

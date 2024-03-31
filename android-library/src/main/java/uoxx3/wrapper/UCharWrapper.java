@@ -1,6 +1,7 @@
 package uoxx3.wrapper;
 
 import androidx.annotation.NonNull;
+import uoxx3.UCopyable;
 import uoxx3.functional.CharFunction;
 import uoxx3.functional.consumer.CharConsumer;
 import uoxx3.functional.supplier.CharSupplier;
@@ -8,7 +9,7 @@ import uoxx3.functional.supplier.CharSupplier;
 /**
  * A wrapper interface for char values.
  */
-public interface UCharWrapper extends CharSupplier {
+public interface UCharWrapper extends CharSupplier, UCopyable<UCharWrapper> {
 	
 	/**
 	 * Performs the given action on the wrapped char value and returns the same object.

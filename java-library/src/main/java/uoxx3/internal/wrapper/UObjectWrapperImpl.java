@@ -107,6 +107,16 @@ public final class UObjectWrapperImpl<T> implements UObjectWrapper<T> {
 	}
 	
 	/**
+	 * Creates a deep copy of the object.
+	 *
+	 * @return A deep copy of the object.
+	 */
+	@Override
+	public @NotNull UObjectWrapper<T> copy() {
+		return apply((T obj) -> obj);
+	}
+	
+	/**
 	 * Gets the wrapped object.
 	 *
 	 * @return the wrapped object

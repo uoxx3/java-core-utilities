@@ -1,8 +1,9 @@
 package uoxx3.wrapper;
 
 import androidx.annotation.NonNull;
+import uoxx3.UCopyable;
 
-public interface UNumberWrapper<T extends Number, W extends UNumberWrapper<?, ?>> {
+public interface UNumberWrapper<T extends Number, W extends UNumberWrapper<?, ?>> extends UCopyable<W> {
 	
 	/**
 	 * Checks if the array content is equal to the specified double value within a default tolerance.

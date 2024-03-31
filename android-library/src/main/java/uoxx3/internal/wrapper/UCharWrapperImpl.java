@@ -13,11 +13,6 @@ public final class UCharWrapperImpl implements UCharWrapper {
 	 * ----------------------------------------------------- */
 	
 	/**
-	 * The lock object for synchronization.
-	 */
-	private final Object lock = new Object();
-	
-	/**
 	 * The wrapped primitive.
 	 */
 	private final char value;
@@ -85,15 +80,24 @@ public final class UCharWrapperImpl implements UCharWrapper {
 	}
 	
 	/**
+	 * Creates a deep copy of the object.
+	 *
+	 * @return A deep copy of the object.
+	 */
+	@NonNull
+	@Override
+	public UCharWrapper copy() {
+		return apply((char c) -> c);
+	}
+	
+	/**
 	 * Gets a char value.
 	 *
 	 * @return a char value
 	 */
 	@Override
 	public char getAsChar() {
-		synchronized (lock) {
-			return value;
-		}
+		return value;
 	}
 	
 	/**

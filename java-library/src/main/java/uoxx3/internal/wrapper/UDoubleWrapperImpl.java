@@ -160,6 +160,16 @@ public final class UDoubleWrapperImpl implements UDoubleWrapper {
 	}
 	
 	/**
+	 * Creates a deep copy of the object.
+	 *
+	 * @return A deep copy of the object.
+	 */
+	@Override
+	public @NotNull UDoubleWrapper copy() {
+		return apply((double v) -> v);
+	}
+	
+	/**
 	 * Gets a result.
 	 *
 	 * @return a result

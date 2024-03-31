@@ -85,6 +85,16 @@ public final class UCharWrapperImpl implements UCharWrapper {
 	}
 	
 	/**
+	 * Creates a deep copy of the object.
+	 *
+	 * @return A deep copy of the object.
+	 */
+	@Override
+	public @NotNull UCharWrapper copy() {
+		return apply((char v) -> v);
+	}
+	
+	/**
 	 * Gets a char value.
 	 *
 	 * @return a char value

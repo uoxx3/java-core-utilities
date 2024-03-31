@@ -163,6 +163,16 @@ public final class UByteWrapperImpl implements UByteWrapper {
 	}
 	
 	/**
+	 * Creates a deep copy of the object.
+	 *
+	 * @return A deep copy of the object.
+	 */
+	@Override
+	public @NotNull UByteWrapper copy() {
+		return apply((byte v) -> v);
+	}
+	
+	/**
 	 * Gets a byte value.
 	 *
 	 * @return a byte value

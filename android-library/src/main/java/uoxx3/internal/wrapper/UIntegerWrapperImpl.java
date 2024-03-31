@@ -1,6 +1,7 @@
 package uoxx3.internal.wrapper;
 
 import androidx.annotation.NonNull;
+import org.jetbrains.annotations.NotNull;
 import uoxx3.wrapper.*;
 
 import java.util.function.IntConsumer;
@@ -163,6 +164,18 @@ public final class UIntegerWrapperImpl implements UIntegerWrapper {
 		return new UDoubleWrapperImpl(
 			function.apply(getAsInt())
 		);
+	}
+	
+	/**
+	 * Creates a deep copy of the object.
+	 *
+	 * @return A deep copy of the object.
+	 */
+	@NonNull
+	@NotNull
+	@Override
+	public UIntegerWrapper copy() {
+		return apply((int v) -> v);
 	}
 	
 	/**
