@@ -166,6 +166,16 @@ public final class UIntegerWrapperImpl implements UIntegerWrapper {
 	}
 	
 	/**
+	 * Creates a deep copy of the object.
+	 *
+	 * @return A deep copy of the object.
+	 */
+	@Override
+	public @NotNull UIntegerWrapper copy() {
+		return apply((int v) -> v);
+	}
+	
+	/**
 	 * Gets a result.
 	 *
 	 * @return a result

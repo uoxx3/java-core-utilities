@@ -163,6 +163,16 @@ public final class UShortWrapperImpl implements UShortWrapper {
 	}
 	
 	/**
+	 * Creates a deep copy of the object.
+	 *
+	 * @return A deep copy of the object.
+	 */
+	@Override
+	public @NotNull UShortWrapper copy() {
+		return apply((short v) -> v);
+	}
+	
+	/**
 	 * Gets a short value.
 	 *
 	 * @return a short value

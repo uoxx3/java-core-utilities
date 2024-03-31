@@ -162,6 +162,16 @@ public final class UFloatWrapperImpl implements UFloatWrapper {
 	}
 	
 	/**
+	 * Creates a deep copy of the object.
+	 *
+	 * @return A deep copy of the object.
+	 */
+	@Override
+	public @NotNull UFloatWrapper copy() {
+		return apply((float v) -> v);
+	}
+	
+	/**
 	 * Gets a result.
 	 *
 	 * @return a result
