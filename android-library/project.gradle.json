@@ -25,7 +25,7 @@
       "pom": {
         "url": "https://github.com/uoxx3/java-core-utilities.git",
         "description": "Library with base utilities for the Java language",
-        "artifact-id": "android",
+        "artifact-id": "jcu-android",
         "licenses": [
           {
             "name": "MIT",
